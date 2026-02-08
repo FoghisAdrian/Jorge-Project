@@ -2,11 +2,9 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    // Movement and Patrol Settings
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Transform[] patrolPoints;
 
-    // NEW: Animator reference
     public Animator enemyAnimator;
 
     private int currentPointIndex;
@@ -16,7 +14,6 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Get the Animator component if not assigned in the Inspector
         if (enemyAnimator == null)
         {
             enemyAnimator = GetComponent<Animator>();
@@ -31,40 +28,27 @@ public class EnemyController : MonoBehaviour
 
     private void Patrol()
     {
-        // 1. Calculate direction to the next patrol point
         Vector2 targetPoint = patrolPoints[currentPointIndex].position;
-        Vector2 moveDirection = (targetPoint - (Vector2)transform.position).normalized;
+        float distanceX = Mathf.Abs(transform.position.x - targetPoint.x);
 
-        // 2. Move the enemy
-        rb.linearVelocity = new Vector2(moveDirection.x * moveSpeed, rb.linearVelocity.y);
+        if (distanceX < 0.2f)
+        {
+            currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
 
-        // 3. NEW: Animation Logic
-        // Check if the enemy is moving horizontally.
+            targetPoint = patrolPoints[currentPointIndex].position;
+        }
+
+        float moveDirX = (targetPoint.x > transform.position.x) ? 1 : -1;
+        rb.linearVelocity = new Vector2(moveDirX * moveSpeed, rb.linearVelocity.y);
+
         bool isMoving = Mathf.Abs(rb.linearVelocity.x) > 0.01f;
-
-        // Update the Animator parameter
         if (enemyAnimator != null)
         {
             enemyAnimator.SetBool("IsWalking", isMoving);
         }
 
-        // 4. Check if the enemy has reached the current patrol point
-        float distance = Vector2.Distance(transform.position, targetPoint);
-
-        if (distance < 0.1f)
-        {
-            currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
-        }
-
-        // 5. Handle flipping the sprite
-        if (moveDirection.x > 0 && !facingRight)
-        {
-            Flip();
-        }
-        else if (moveDirection.x < 0 && facingRight)
-        {
-            Flip();
-        }
+        if (moveDirX < 0 && !facingRight) Flip();
+        else if (moveDirX > 0 && facingRight) Flip();
     }
 
     private void Flip()
