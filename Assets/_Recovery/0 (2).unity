@@ -1051,19 +1051,7 @@ MonoBehaviour:
   maxHealth: 5
   OnDamageTaken:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 274899522}
-        m_TargetAssemblyTypeName: PlayerAudio, Assembly-CSharp
-        m_MethodName: PlayRandomHurtSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -1165,23 +1153,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &274899522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274899500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 108eb9e28d7e42b4b8995fa23dc7ac0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAudio
-  jumpSound: {fileID: 8300000, guid: 255061419c705514c80c067a3a35fc19, type: 3}
-  hurtSounds:
-  - {fileID: 8300000, guid: f5998820f8698fe449a689934d5a0603, type: 3}
-  - {fileID: 8300000, guid: 5e07fe130853faa449c7aed1bd0e1f19, type: 3}
-  - {fileID: 8300000, guid: a7e90e57a17a4d64b965019f114217b6, type: 3}
 --- !u!1 &322685019
 GameObject:
   m_ObjectHideFlags: 0
@@ -4727,9 +4698,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7066594729891071932, guid: 4f98a313196d3b1469859cfd9ad2db3f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 274899518}
-    - targetCorrespondingSourceObject: {fileID: 7066594729891071932, guid: 4f98a313196d3b1469859cfd9ad2db3f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 274899522}
   m_SourcePrefab: {fileID: 100100000, guid: 4f98a313196d3b1469859cfd9ad2db3f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

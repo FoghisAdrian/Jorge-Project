@@ -21,6 +21,9 @@ public class Health : MonoBehaviour
         originalColor = spriteRenderer.color;
     }
 
+    public int GetCurrentHealth() { return currentHealth; }
+    public int GetMaxHealth() { return maxHealth; }
+
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
@@ -28,6 +31,11 @@ public class Health : MonoBehaviour
 
         OnDamageTaken.Invoke();
         StartCoroutine(FlashRed());
+
+        if (gameObject.CompareTag("Player") && GameManager.Instance != null)
+        {
+            GameManager.Instance.UpdateHearts(currentHealth);
+        }
 
         if (currentHealth <= 0)
         {
@@ -44,19 +52,38 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        Animator anim = GetComponent<Animator>();
-        if (anim != null)
+        if (!gameObject.CompareTag("Player"))
         {
-            anim.SetTrigger("Die");
+            Animator anim = GetComponent<Animator>();
+            if (anim != null)
+            {
+                anim.SetTrigger("Die");
+            }
+
+            if (GetComponent<EnemyController>() != null)
+            {
+                GetComponent<EnemyController>().enabled = false;
+            }
+
+            Destroy(gameObject, 1.5f);
         }
-
-        GetComponent<Collider2D>().enabled = false;
-
-        if (GetComponent<EnemyController>() != null)
+        else
         {
-            GetComponent<EnemyController>().enabled = false;
-        }
+            Debug.Log("Jorge died! No animation yet, just respawning...");
 
-        Destroy(gameObject, 1.5f);
+            GetComponent<Collider2D>().enabled = false;
+
+            gameObject.SetActive(false);
+            GameManager.Instance.PlayerDied();
+        }
+    }
+
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.UpdateHearts(currentHealth);
+        }
     }
 }

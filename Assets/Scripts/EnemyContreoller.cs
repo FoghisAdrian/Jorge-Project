@@ -9,7 +9,16 @@ public class EnemyController : MonoBehaviour
 
     private int currentPointIndex;
     private Rigidbody2D rb;
-    private bool facingRight = true;
+    private bool facingRight = false; // Updated for Left-facing sprite
+
+    public GameObject churroPrefab;
+    public Transform throwPoint;
+    [SerializeField] private float timeBetweenAttacks = 2f;
+    private float nextAttackTime;
+
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private float detectionRange = 10f; // Updated to 10
+    [SerializeField] private float stopDistance = 4f;  // Updated to 4
 
     void Start()
     {
@@ -23,7 +32,42 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Patrol();
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+
+        if (distanceToPlayer < detectionRange)
+        {
+            HandleCombat(distanceToPlayer);
+        }
+        else
+        {
+            Patrol();
+        }
+    }
+
+    private void HandleCombat(float distance)
+    {
+        float dirToPlayer = playerTransform.position.x - transform.position.x;
+
+        if (dirToPlayer > 0 && !facingRight) Flip();
+        else if (dirToPlayer < 0 && facingRight) Flip();
+
+        if (distance > stopDistance)
+        {
+            float moveDirX = (dirToPlayer > 0) ? 1 : -1;
+            rb.linearVelocity = new Vector2(moveDirX * moveSpeed, rb.linearVelocity.y);
+            enemyAnimator.SetBool("IsWalking", true);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            enemyAnimator.SetBool("IsWalking", false);
+
+            if (Time.time >= nextAttackTime)
+            {
+                Attack();
+                nextAttackTime = Time.time + timeBetweenAttacks;
+            }
+        }
     }
 
     private void Patrol()
@@ -34,7 +78,6 @@ public class EnemyController : MonoBehaviour
         if (distanceX < 0.2f)
         {
             currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
-
             targetPoint = patrolPoints[currentPointIndex].position;
         }
 
@@ -47,8 +90,27 @@ public class EnemyController : MonoBehaviour
             enemyAnimator.SetBool("IsWalking", isMoving);
         }
 
-        if (moveDirX < 0 && !facingRight) Flip();
-        else if (moveDirX > 0 && facingRight) Flip();
+        if (moveDirX < 0 && facingRight) Flip();
+        else if (moveDirX > 0 && !facingRight) Flip();
+    }
+
+    private void Attack()
+    {
+        enemyAnimator.SetTrigger("Attack");
+    }
+
+    public void ThrowChurro()
+    {
+        GameObject newChurro = Instantiate(churroPrefab, throwPoint.position, throwPoint.rotation);
+
+        if (!facingRight)
+        {
+            newChurro.transform.right = Vector2.left;
+        }
+        else
+        {
+            newChurro.transform.right = Vector2.right;
+        }
     }
 
     private void Flip()
