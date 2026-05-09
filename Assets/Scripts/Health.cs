@@ -60,19 +60,44 @@ public class Health : MonoBehaviour
                 anim.SetTrigger("Die");
             }
 
+            // Disable the AI so he stops trying to move
             if (GetComponent<EnemyController>() != null)
             {
                 GetComponent<EnemyController>().enabled = false;
             }
+
+            // --- PHYSICS FIXES START HERE ---
+
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                // 1. Switch to Dynamic so gravity pulls him down
+                rb.bodyType = RigidbodyType2D.Dynamic;
+
+                // 2. Unlock rotation so he can actually spin/flip
+                rb.constraints = RigidbodyConstraints2D.None;
+
+                // 3. Give him a tiny 'death hop' so he clears the platform edge
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5f);
+
+                // 4. Make him rotate as he falls
+                rb.AddTorque(10f, ForceMode2D.Impulse);
+            }
+
+            // 5. Disable the collider so he slips THROUGH the floor and doesn't get stuck
+            if (GetComponent<Collider2D>() != null)
+            {
+                GetComponent<Collider2D>().enabled = false;
+            }
+
+            // --- PHYSICS FIXES END HERE ---
 
             Destroy(gameObject, 1.5f);
         }
         else
         {
             Debug.Log("Jorge died! No animation yet, just respawning...");
-
             GetComponent<Collider2D>().enabled = false;
-
             gameObject.SetActive(false);
             GameManager.Instance.PlayerDied();
         }

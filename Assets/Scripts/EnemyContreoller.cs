@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
 
     private int currentPointIndex;
     private Rigidbody2D rb;
-    private bool facingRight = false; // Updated for Left-facing sprite
+    private bool facingRight = false;
 
     public GameObject churroPrefab;
     public Transform throwPoint;
@@ -17,8 +17,8 @@ public class EnemyController : MonoBehaviour
     private float nextAttackTime;
 
     [SerializeField] private Transform playerTransform;
-    [SerializeField] private float detectionRange = 10f; // Updated to 10
-    [SerializeField] private float stopDistance = 4f;  // Updated to 4
+    [SerializeField] private float detectionRange = 10f; 
+    [SerializeField] private float stopDistance = 4f; 
 
     void Start()
     {

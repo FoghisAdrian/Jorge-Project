@@ -1,22 +1,28 @@
 fileFormatVersion: 2
-guid: 3496180b582ea6b4091d46d5a8d505cc
+guid: 6f5adcda416006a47b187f2b57213071
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9195492617264099942
-    second: GangMember1Throw_0
+      213: -7164381467998547653
+    second: BullMaskGangMemberIdle_0
   - first:
-      213: -4163741254453689417
-    second: GangMember1Throw_1
+      213: 4689798621444480751
+    second: BullMaskGangMemberIdle_1
   - first:
-      213: -5210799303401604652
-    second: GangMember1Throw_2
+      213: 2513333428317957595
+    second: BullMaskGangMemberIdle_2
   - first:
-      213: 8835007898895219904
-    second: GangMember1Throw_3
+      213: 3783357908104135251
+    second: BullMaskGangMemberIdle_3
   - first:
-      213: 8101456418056479005
-    second: GangMember1Throw_4
+      213: -2764842266970222832
+    second: BullMaskGangMemberIdle_4
+  - first:
+      213: -3762165065322714752
+    second: BullMaskGangMemberIdle_5
+  - first:
+      213: -569248852815625721
+    second: BullMaskGangMemberIdle_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -125,35 +131,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GangMember1Throw_0
+      name: BullMaskGangMemberIdle_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 32
-        width: 19
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 662f0cac0d3fc9f70800000000000000
-      internalID: 9195492617264099942
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GangMember1Throw_1
-      rect:
-        serializedVersion: 2
-        x: 6
+        x: 2
         y: 64
-        width: 19
-        height: 32
+        width: 27
+        height: 28
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7b306a7b36b6736c0800000000000000
-      internalID: -4163741254453689417
+      spriteID: b311e8c6301039c90800000000000000
+      internalID: -7164381467998547653
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GangMember1Throw_2
+      name: BullMaskGangMemberIdle_1
       rect:
         serializedVersion: 2
-        x: 37
+        x: 34
         y: 64
-        width: 20
-        height: 32
+        width: 27
+        height: 28
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -184,20 +168,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4d9f4ec34a58fa7b0800000000000000
-      internalID: -5210799303401604652
+      spriteID: fee9053aff2851140800000000000000
+      internalID: 4689798621444480751
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GangMember1Throw_3
+      name: BullMaskGangMemberIdle_2
       rect:
         serializedVersion: 2
-        x: 37
-        y: 32
-        width: 20
-        height: 32
+        x: 66
+        y: 64
+        width: 27
+        height: 28
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -206,20 +190,86 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0cc7b69cfd04c9a70800000000000000
-      internalID: 8835007898895219904
+      spriteID: bdda105df6721e220800000000000000
+      internalID: 2513333428317957595
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GangMember1Throw_4
+      name: BullMaskGangMemberIdle_3
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 32
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35246bae8ff218430800000000000000
+      internalID: 3783357908104135251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullMaskGangMemberIdle_4
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 32
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01f01416b9e41a9d0800000000000000
+      internalID: -2764842266970222832
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullMaskGangMemberIdle_5
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 32
+        width: 27
+        height: 28
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0892e0f4eca1acbc0800000000000000
+      internalID: -3762165065322714752
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BullMaskGangMemberIdle_6
       rect:
         serializedVersion: 2
         x: 3
         y: 0
-        width: 24
-        height: 32
+        width: 27
+        height: 27
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,8 +278,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d11a09950b72e6070800000000000000
-      internalID: 8101456418056479005
+      spriteID: 70240233f2f9918f0800000000000000
+      internalID: -569248852815625721
       vertices: []
       indices: 
       edges: []
@@ -238,7 +288,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1e8d06ea17913d7449becb34df3d0761
+    spriteID: 7786b205a7ee5b1429b1e7f416bb948b
     internalID: 0
     vertices: []
     indices: 
@@ -248,12 +298,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      GangMember1Throw_0: 9195492617264099942
-      GangMember1Throw_1: -4163741254453689417
-      GangMember1Throw_2: -5210799303401604652
-      GangMember1Throw_3: 8835007898895219904
-      GangMember1Throw_4: 8101456418056479005
-      GangMember1Throw_5: 846504943
+      BullMaskGangMemberIdle_0: -7164381467998547653
+      BullMaskGangMemberIdle_1: 4689798621444480751
+      BullMaskGangMemberIdle_2: 2513333428317957595
+      BullMaskGangMemberIdle_3: 3783357908104135251
+      BullMaskGangMemberIdle_4: -2764842266970222832
+      BullMaskGangMemberIdle_5: -3762165065322714752
+      BullMaskGangMemberIdle_6: -569248852815625721
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
