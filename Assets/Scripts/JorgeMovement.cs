@@ -7,6 +7,7 @@ public class JorgeMovement : MonoBehaviour
     public float horizontalMove = 0f;
     public float runSpeed = 40f;
     public bool jump = false;
+    public bool crouch = false;
     public Animator jorgeAnimator;
     public bool isAttacking = false;
 
@@ -14,10 +15,21 @@ public class JorgeMovement : MonoBehaviour
     {
         bool isGrounded = jorgeController.m_Grounded;
 
-        if (!isAttacking && isGrounded && (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire1")))
+        if (Input.GetKey(KeyCode.S))
+        {
+            crouch = true;
+        }
+        else
+        {
+            crouch = false;
+        }
+
+        jorgeAnimator.SetBool("IsCrouching", crouch);
+
+        if (!isAttacking && isGrounded && !crouch && (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire1")))
         {
             jorgeAnimator.SetTrigger("Attack");
-            isAttacking = true; 
+            isAttacking = true;
         }
 
         if (isAttacking)
@@ -27,16 +39,22 @@ public class JorgeMovement : MonoBehaviour
             return;
         }
 
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-        jorgeAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+        if (crouch && isGrounded)
+        {
+            horizontalMove = 0f;
+            jorgeAnimator.SetFloat("Speed", 0f);
+        }
+        else
+        {
+            horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+            jorgeAnimator.SetFloat("Speed", Mathf.Abs(horizontalMove));
+        }
 
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && !crouch)
         {
             jump = true;
             jorgeAnimator.SetBool("Jumping", true);
         }
-
-        
     }
 
     public void EndAttack()
@@ -44,7 +62,7 @@ public class JorgeMovement : MonoBehaviour
         isAttacking = false;
     }
 
-    public void OnLanding ()
+    public void OnLanding()
     {
         jorgeAnimator.SetBool("Jumping", false);
         jump = false;
@@ -52,7 +70,7 @@ public class JorgeMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        jorgeController.Move(horizontalMove * Time.fixedDeltaTime, false, jump);
-        jump = false;   
+        jorgeController.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
+        jump = false;
     }
 }

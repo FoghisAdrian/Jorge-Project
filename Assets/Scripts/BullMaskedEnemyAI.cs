@@ -19,6 +19,8 @@ public class BullEnemyAI : MonoBehaviour
     public LayerMask playerLayer;
     private bool isCharging = false;
     private bool isAngry = false;
+    private bool isStunned = false;
+
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Animator anim;
@@ -33,7 +35,7 @@ public class BullEnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (isCharging || isAngry) return;
+        if (isCharging || isAngry || isStunned) return;
 
         DetectPlayer();
         Patrol();
@@ -41,13 +43,19 @@ public class BullEnemyAI : MonoBehaviour
 
     void Patrol()
     {
-        transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, patrolSpeed * Time.deltaTime);
         anim.SetBool("isWalking", true);
+        anim.SetBool("isRunning", false);
 
-        if (Vector2.Distance(transform.position, currentTarget.position) < 0.2f)
+        transform.position = Vector2.MoveTowards(transform.position, new Vector2(currentTarget.position.x, transform.position.y), patrolSpeed * Time.deltaTime);
+
+        if (currentTarget.position.x > transform.position.x)
+            transform.localScale = new Vector3(1, 1, 1);
+        else
+            transform.localScale = new Vector3(-1, 1, 1);
+
+        if (Mathf.Abs(transform.position.x - currentTarget.position.x) < 0.35f)
         {
             currentTarget = (currentTarget == pointA) ? pointB : pointA;
-            Flip();
         }
     }
 
@@ -55,7 +63,7 @@ public class BullEnemyAI : MonoBehaviour
     {
         float distToPlayer = Vector2.Distance(transform.position, player.position);
 
-        if (distToPlayer < detectionRadius && !isAngry)
+        if (distToPlayer < detectionRadius && !isAngry && !isStunned)
         {
             float directionToPlayer = player.position.x - transform.position.x;
             bool isFacingPlayer = (transform.localScale.x > 0 && directionToPlayer > 0) || (transform.localScale.x < 0 && directionToPlayer < 0);
@@ -67,29 +75,32 @@ public class BullEnemyAI : MonoBehaviour
         }
     }
 
-    void Flip()
-    {
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1;
-        transform.localScale = localScale;
-    }
-
     IEnumerator AngerSequence()
     {
         isAngry = true;
+
         anim.SetBool("isWalking", false);
+        anim.SetBool("isRunning", false);
+
+        anim.Play("BullMaskGangMemberIdle");
 
         Color originalColor = sr.color;
+        Vector3 startPos = transform.position;
+
         for (int i = 0; i < 10; i++)
         {
             sr.color = Color.red;
-            transform.position += new Vector3(0.05f, 0, 0);
+            transform.position += new Vector3(Random.Range(-0.06f, 0.06f), 0, 0);
+
             yield return new WaitForSeconds(0.05f);
-            transform.position -= new Vector3(0.05f, 0, 0);
+
+            transform.position = new Vector3(startPos.x, transform.position.y, transform.position.z);
             sr.color = originalColor;
+
             yield return new WaitForSeconds(0.05f);
         }
 
+        sr.color = Color.red;
         StartCoroutine(Charge());
     }
 
@@ -99,7 +110,6 @@ public class BullEnemyAI : MonoBehaviour
         anim.SetBool("isRunning", true);
 
         float chargeDir = transform.localScale.x;
-        Vector2 startPos = transform.position;
         float traveled = 0;
 
         while (traveled < chargeDistance)
@@ -110,9 +120,38 @@ public class BullEnemyAI : MonoBehaviour
             yield return null;
         }
 
+        isCharging = false; 
         anim.SetBool("isRunning", false);
-        yield return new WaitForSeconds(1f);
-        isCharging = false;
+        anim.SetBool("isWalking", false); 
+        sr.color = Color.white;
+
+        isStunned = true;
+        yield return new WaitForSeconds(2.0f); 
+        isStunned = false;
         isAngry = false;
+    }
+
+    public void HandleDeath()
+    {
+        StopAllCoroutines();
+        sr.color = Color.white; 
+        this.enabled = false; 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && isCharging)
+        {
+            Health playerHealth = collision.gameObject.GetComponent<Health>();
+            if (playerHealth != null) playerHealth.TakeDamage(2);
+
+            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            if (playerRb != null)
+            {
+                Vector2 knockbackDir = new Vector2(transform.localScale.x * 6f, 9f);
+                playerRb.linearVelocity = Vector2.zero;
+                playerRb.AddForce(knockbackDir, ForceMode2D.Impulse);
+            }
+        }
     }
 }

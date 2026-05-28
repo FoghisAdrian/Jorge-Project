@@ -60,37 +60,45 @@ public class Health : MonoBehaviour
                 anim.SetTrigger("Die");
             }
 
-            // Disable the AI so he stops trying to move
             if (GetComponent<EnemyController>() != null)
             {
                 GetComponent<EnemyController>().enabled = false;
             }
 
-            // --- PHYSICS FIXES START HERE ---
+            BullEnemyAI bullAI = GetComponent<BullEnemyAI>();
+            if (bullAI != null)
+            {
+                bullAI.HandleDeath();
+            }
 
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                // 1. Switch to Dynamic so gravity pulls him down
                 rb.bodyType = RigidbodyType2D.Dynamic;
-
-                // 2. Unlock rotation so he can actually spin/flip
                 rb.constraints = RigidbodyConstraints2D.None;
 
-                // 3. Give him a tiny 'death hop' so he clears the platform edge
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5f);
+                float knockbackDirection = -1f;
+                float torqueDirection = 1f;    
 
-                // 4. Make him rotate as he falls
-                rb.AddTorque(10f, ForceMode2D.Impulse);
+                if (bullAI != null && bullAI.player != null)
+                {
+                    if (bullAI.player.position.x < transform.position.x)
+                    {
+                        knockbackDirection = 1f;
+                        torqueDirection = -1f; 
+                    }
+                }
+
+                float forceX = knockbackDirection * 4f;
+                rb.linearVelocity = new Vector2(forceX, 5f);
+
+                rb.AddTorque(10f * torqueDirection, ForceMode2D.Impulse);
             }
 
-            // 5. Disable the collider so he slips THROUGH the floor and doesn't get stuck
             if (GetComponent<Collider2D>() != null)
             {
                 GetComponent<Collider2D>().enabled = false;
             }
-
-            // --- PHYSICS FIXES END HERE ---
 
             Destroy(gameObject, 1.5f);
         }

@@ -4,41 +4,51 @@ using UnityEngine.Events;
 public class JorgeController : MonoBehaviour
 {
     [SerializeField] private float m_JumpForce = 400f;
-    [Range(0, 1)][SerializeField] private float m_CrouchSpeed = .36f;
-    [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f; 
-    [SerializeField] private bool m_AirControl = false;                        
-    [SerializeField] private LayerMask m_WhatIsGround;                          
-    [SerializeField] private Transform m_GroundCheck;                           
-    [SerializeField] private Transform m_CeilingCheck;                          
-    [SerializeField] private Collider2D m_CrouchDisableCollider;               
+    [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f;
+    [SerializeField] private bool m_AirControl = false;
+    [SerializeField] private LayerMask m_WhatIsGround;
+    [SerializeField] private Transform m_GroundCheck;
+    [SerializeField] private Transform m_CeilingCheck;
+    [SerializeField] private Collider2D m_CrouchDisableCollider;
 
-    const float k_GroundedRadius = .2f; 
-    public bool m_Grounded;           
-    const float k_CeilingRadius = .2f; 
+    const float k_GroundedRadius = .2f;
+    public bool m_Grounded;
+    const float k_CeilingRadius = .2f;
     private Rigidbody2D m_Rigidbody2D;
-    private bool m_FacingRight = true;  
+    private bool m_FacingRight = true;
     private Vector3 m_Velocity = Vector3.zero;
+
+    private Collider2D m_MainCollider;
+    private Vector2 m_OriginalSize;
+    private Vector2 m_OriginalOffset;
 
     [Header("Events")]
     [Space]
-
     public UnityEvent OnLandEvent;
 
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
-
     public BoolEvent OnCrouchEvent;
     private bool m_wasCrouching = false;
 
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        m_MainCollider = GetComponent<Collider2D>();
 
-        if (OnLandEvent == null)
-            OnLandEvent = new UnityEvent();
+        if (m_MainCollider is CapsuleCollider2D)
+        {
+            m_OriginalSize = ((CapsuleCollider2D)m_MainCollider).size;
+            m_OriginalOffset = ((CapsuleCollider2D)m_MainCollider).offset;
+        }
+        else if (m_MainCollider is BoxCollider2D)
+        {
+            m_OriginalSize = ((BoxCollider2D)m_MainCollider).size;
+            m_OriginalOffset = ((BoxCollider2D)m_MainCollider).offset;
+        }
 
-        if (OnCrouchEvent == null)
-            OnCrouchEvent = new BoolEvent();
+        if (OnLandEvent == null) OnLandEvent = new UnityEvent();
+        if (OnCrouchEvent == null) OnCrouchEvent = new BoolEvent();
     }
 
     private void FixedUpdate()
@@ -57,7 +67,6 @@ public class JorgeController : MonoBehaviour
             }
         }
     }
-
 
     public void Move(float move, bool crouch, bool jump)
     {
@@ -79,7 +88,9 @@ public class JorgeController : MonoBehaviour
                     OnCrouchEvent.Invoke(true);
                 }
 
-                move *= m_CrouchSpeed;
+                m_Rigidbody2D.linearVelocity = new Vector2(0f, m_Rigidbody2D.linearVelocity.y);
+                m_Velocity = Vector3.zero; 
+                move = 0f;
 
                 if (m_CrouchDisableCollider != null)
                     m_CrouchDisableCollider.enabled = false;
@@ -93,20 +104,18 @@ public class JorgeController : MonoBehaviour
                 {
                     m_wasCrouching = false;
                     OnCrouchEvent.Invoke(false);
+                    m_Velocity = Vector3.zero; 
                 }
             }
 
-            Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.linearVelocity.y);
-            m_Rigidbody2D.linearVelocity = Vector3.SmoothDamp(m_Rigidbody2D.linearVelocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+            if (!crouch)
+            {
+                Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.linearVelocity.y);
+                m_Rigidbody2D.linearVelocity = Vector3.SmoothDamp(m_Rigidbody2D.linearVelocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+            }
 
-            if (move > 0 && !m_FacingRight)
-            {
-                Flip();
-            }
-            else if (move < 0 && m_FacingRight)
-            {
-                Flip();
-            }
+            if (move > 0 && !m_FacingRight) Flip();
+            else if (move < 0 && m_FacingRight) Flip();
         }
 
         if (m_Grounded && jump)
@@ -122,11 +131,41 @@ public class JorgeController : MonoBehaviour
         }
     }
 
+    private void AdjustColliderHeight(bool isCrouching)
+    {
+        if (m_MainCollider == null) return;
+
+        if (isCrouching)
+        {
+            if (m_MainCollider is CapsuleCollider2D capsule)
+            {
+                capsule.size = new Vector2(m_OriginalSize.x, m_OriginalSize.y * 0.55f);
+                capsule.offset = new Vector2(m_OriginalOffset.x, m_OriginalOffset.y - (m_OriginalSize.y * 0.22f));
+            }
+            else if (m_MainCollider is BoxCollider2D box)
+            {
+                box.size = new Vector2(m_OriginalSize.x, m_OriginalSize.y * 0.55f);
+                box.offset = new Vector2(m_OriginalOffset.x, m_OriginalOffset.y - (m_OriginalSize.y * 0.22f));
+            }
+        }
+        else
+        {
+            if (m_MainCollider is CapsuleCollider2D capsule)
+            {
+                capsule.size = m_OriginalSize;
+                capsule.offset = m_OriginalOffset;
+            }
+            else if (m_MainCollider is BoxCollider2D box)
+            {
+                box.size = m_OriginalSize;
+                box.offset = m_OriginalOffset;
+            }
+        }
+    }
 
     private void Flip()
     {
         m_FacingRight = !m_FacingRight;
-
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
