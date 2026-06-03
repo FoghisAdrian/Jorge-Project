@@ -26,7 +26,7 @@ public class JorgeMovement : MonoBehaviour
 
         jorgeAnimator.SetBool("IsCrouching", crouch);
 
-        if (!isAttacking && isGrounded && !crouch && (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire1")))
+        if (!isAttacking && isGrounded && !crouch && (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire1")) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
             jorgeAnimator.SetTrigger("Attack");
             isAttacking = true;
