@@ -102,4 +102,16 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public bool TryAddLife()
+    {
+        if(currentLives >= maxLives)
+        {
+            return false;
+        }
+
+        currentLives++;
+        UpdateUI();
+        return true;
+    } 
 }
