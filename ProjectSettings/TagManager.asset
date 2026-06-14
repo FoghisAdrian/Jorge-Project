@@ -13,7 +13,7 @@ TagManager:
   - UI
   - Enemies
   - Player
-  - Background
+  - 
   - 
   - 
   - 
@@ -38,8 +38,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 515379475
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Perks
+    uniqueID: 605417827
+    locked: 0
+  - name: Player
+    uniqueID: 2476346315
     locked: 0
   m_RenderingLayers:
   - Default

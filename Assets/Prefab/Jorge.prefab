@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7529218967863891980}
   - component: {fileID: 3399030112485277400}
   - component: {fileID: 7111290824317365361}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Jorge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,3 +192,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22535b3468ad167489c05c820e735641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  m_JumpForce: 400
+  m_MovementSmoothing: 0.05
+  m_AirControl: 0
+  m_WhatIsGround:
+    serializedVersion: 2
+    m_Bits: 0
+  m_GroundCheck: {fileID: 0}
+  m_CeilingCheck: {fileID: 0}
+  m_CrouchDisableCollider: {fileID: 0}
+  m_Grounded: 0
+  OnLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCrouchEvent:
+    m_PersistentCalls:
+      m_Calls: []

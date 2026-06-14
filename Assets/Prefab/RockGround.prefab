@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2913849145602775954
+--- !u!1 &3168826872022842988
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8335372549121940612}
-  - component: {fileID: 2071262980214420666}
-  - component: {fileID: 5090935079407322775}
-  - component: {fileID: 4478088542316385175}
+  - component: {fileID: 7224180676998610967}
+  - component: {fileID: 97161710852648726}
+  - component: {fileID: 4799422873623308048}
   m_Layer: 0
-  m_Name: GoldenRosePerk
+  m_Name: RockGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8335372549121940612
+--- !u!4 &7224180676998610967
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2913849145602775954}
+  m_GameObject: {fileID: 3168826872022842988}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.396, y: -0.025, z: 0}
-  m_LocalScale: {x: 0.5186, y: 0.5186, z: 0.5186}
+  m_LocalRotation: {x: -0, y: 0.0035379734, z: -0, w: 0.99999374}
+  m_LocalPosition: {x: -4.72, y: 0.37, z: 0}
+  m_LocalScale: {x: 1.0045531, y: 1.0497062, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &2071262980214420666
+  m_LocalEulerAnglesHint: {x: 0, y: 0.405, z: 0}
+--- !u!212 &97161710852648726
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2913849145602775954}
+  m_GameObject: {fileID: 3168826872022842988}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -78,27 +77,27 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 515379475
-  m_SortingLayer: -1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3395862947451256905, guid: 3f8511a44bf661c4882ea5017010ecd7, type: 3}
+  m_Sprite: {fileID: 1832314451160388407, guid: 7b1925f1a33db2247a46e91f637cac03, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.59375, y: 0.875}
+  m_Size: {x: 1, y: 0.5625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &5090935079407322775
+--- !u!61 &4799422873623308048
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2913849145602775954}
+  m_GameObject: {fileID: 3168826872022842988}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -122,7 +121,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -130,23 +129,11 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.59375, y: 0.875}
-    newSize: {x: 0.59375, y: 0.875}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 0.5625}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.59375, y: 0.875}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &4478088542316385175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2913849145602775954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98d7640989b5634494d1cff5fe3f8f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GoldenRosePerk
