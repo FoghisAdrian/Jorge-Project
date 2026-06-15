@@ -11,6 +11,10 @@ public class JorgeMovement : MonoBehaviour
     public Animator jorgeAnimator;
     public bool isAttacking = false;
 
+    [Header("Guitar Smash Combat")]
+    public int smashDamage = 3;
+    public GameObject guitarHitBox;
+
     void Update()
     {
         bool isGrounded = jorgeController.m_Grounded;
@@ -29,6 +33,12 @@ public class JorgeMovement : MonoBehaviour
         if (!isAttacking && isGrounded && !crouch && (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire1")) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
             jorgeAnimator.SetTrigger("Attack");
+            isAttacking = true;
+        }
+
+        if (!isAttacking && isGrounded && !crouch && Input.GetKeyDown(KeyCode.Q))
+        {
+            jorgeAnimator.SetTrigger("GuitarSmash");
             isAttacking = true;
         }
 
@@ -54,6 +64,22 @@ public class JorgeMovement : MonoBehaviour
         {
             jump = true;
             jorgeAnimator.SetBool("Jumping", true);
+        }
+    }
+
+    public void StartGuitarSmash()
+    {
+        if (guitarHitBox != null)
+        {
+            guitarHitBox.SetActive(true);
+        }
+    }
+
+    public void EndGuitarSmash()
+    {
+        if (guitarHitBox != null)
+        {
+            guitarHitBox.SetActive(false);
         }
     }
 
