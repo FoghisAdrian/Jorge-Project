@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: 764c0595ec3abdd4782aaa4dd11e4c07
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - jorgeController: {instanceID: 0}
+  - jorgeAnimator: {instanceID: 0}
+  - guitarHitBox: {fileID: 7543778547766123931, guid: 096753e17851afc4e8c9550c4416d393, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

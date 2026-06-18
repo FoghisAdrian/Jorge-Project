@@ -32,6 +32,16 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (playerTransform == null) return;
+
+        float heightDifference = Mathf.Abs(transform.position.y - playerTransform.position.y);
+
+        if (heightDifference > 1.5f)
+        {
+            Patrol();
+            return;
+        }
+
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
         if (distanceToPlayer < detectionRange)

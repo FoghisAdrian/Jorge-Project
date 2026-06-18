@@ -34,6 +34,8 @@ public class JorgeMovement : MonoBehaviour
         {
             jorgeAnimator.SetTrigger("Attack");
             isAttacking = true;
+
+            Debug.Log("DEBUG ATAC: Tasta de atac a fost apasata! Starea isAttacking este: " + isAttacking);
         }
 
         if (!isAttacking && isGrounded && !crouch && Input.GetKeyDown(KeyCode.Q))
@@ -69,9 +71,63 @@ public class JorgeMovement : MonoBehaviour
 
     public void StartGuitarSmash()
     {
-        if (guitarHitBox != null)
+        if (guitarHitBox == null)
         {
-            guitarHitBox.SetActive(true);
+            Debug.LogError("ERROR: guitarHitBox is null!");
+            return;
+        }
+
+        guitarHitBox.SetActive(true);
+        Debug.Log("DEBUG 1: Hitbox activated");
+
+        BoxCollider2D boxCollider = guitarHitBox.GetComponent<BoxCollider2D>();
+        if (boxCollider == null)
+        {
+            Debug.LogError("ERROR: No BoxCollider2D found!");
+            return;
+        }
+
+        float directionSign = Mathf.Sign(transform.localScale.x);
+        Vector2 calculatedOffset = new Vector2(boxCollider.offset.x * directionSign, boxCollider.offset.y);
+        Vector2 center = (Vector2)guitarHitBox.transform.position + calculatedOffset;
+        Vector2 size = boxCollider.size;
+
+        Collider2D[] hitObjects = Physics2D.OverlapBoxAll(center, size, 0f);
+
+        bool hitEnemy = false;
+
+        for (int i = 0; i < hitObjects.Length; i++)
+        {
+            if (hitObjects[i].CompareTag("Enemy"))
+            {
+                hitEnemy = true;
+
+                Rigidbody2D enemyRb = hitObjects[i].GetComponent<Rigidbody2D>();
+                if (enemyRb != null)
+                {
+                    Vector2 knockbackForce = new Vector2(18f, 5f);
+
+                    enemyRb.linearVelocity = Vector2.zero;
+
+                    enemyRb.AddForce(knockbackForce, ForceMode2D.Impulse);
+
+                    Debug.Log("Knockback applied to: " + hitObjects[i].name);
+                }
+            }
+        }
+
+        if (hitEnemy)
+        {
+            PlayerAudio pAudio = GetComponent<PlayerAudio>();
+            if (pAudio != null)
+            {
+                pAudio.PlayGuitarSmashSound();
+                Debug.Log("DEBUG SUCCESS: Sound triggered!");
+            }
+        }
+        else
+        {
+            Debug.Log("DEBUG FAIL: No enemy tag found inside the box");
         }
     }
 

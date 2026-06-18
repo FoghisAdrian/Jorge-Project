@@ -61,6 +61,15 @@ public class BullEnemyAI : MonoBehaviour
 
     void DetectPlayer()
     {
+        if (player == null) return;
+
+        float heightDifference = Mathf.Abs(transform.position.y - player.position.y);
+
+        if (heightDifference > 1.5f)
+        {
+            return;
+        }
+
         float distToPlayer = Vector2.Distance(transform.position, player.position);
 
         if (distToPlayer < detectionRadius && !isAngry && !isStunned)
@@ -120,15 +129,41 @@ public class BullEnemyAI : MonoBehaviour
             yield return null;
         }
 
-        isCharging = false; 
+        isCharging = false;
         anim.SetBool("isRunning", false);
-        anim.SetBool("isWalking", false); 
+        anim.SetBool("isWalking", false);
         sr.color = Color.white;
 
         isStunned = true;
-        yield return new WaitForSeconds(2.0f); 
+        yield return new WaitForSeconds(2.0f);
         isStunned = false;
         isAngry = false;
+
+        if (player != null)
+        {
+            float directionToPlayer = player.position.x - transform.position.x;
+
+            if (directionToPlayer > 0)
+            {
+                transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                transform.localScale = new Vector3(-1, 1, 1);
+            }
+
+            float distToA = Mathf.Abs(transform.position.x - pointA.position.x);
+            float distToB = Mathf.Abs(transform.position.x - pointB.position.x);
+
+            if (directionToPlayer > 0)
+            {
+                currentTarget = (pointB.position.x > pointA.position.x) ? pointB : pointA;
+            }
+            else
+            {
+                currentTarget = (pointB.position.x < pointA.position.x) ? pointB : pointA;
+            }
+        }
     }
 
     public void HandleDeath()

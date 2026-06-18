@@ -8,6 +8,9 @@ public class PlayerAudio : MonoBehaviour
     [Header("Hurt Settings")]
     public AudioClip[] hurtSounds;
 
+    [Header("Guitar Smash Settings")]
+    public AudioClip guitarSmashSound;
+
     private AudioSource audioSource;
 
     void Awake()
@@ -29,6 +32,14 @@ public class PlayerAudio : MonoBehaviour
         {
             int randomIndex = Random.Range(0, hurtSounds.Length);
             audioSource.PlayOneShot(hurtSounds[randomIndex]);
+        }
+    }
+
+    public void PlayGuitarSmashSound()
+    {
+        if (audioSource != null && guitarSmashSound != null)
+        {
+            audioSource.PlayOneShot(guitarSmashSound);
         }
     }
 }
