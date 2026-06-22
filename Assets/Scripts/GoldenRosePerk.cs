@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class OneUpPerk : MonoBehaviour
 {
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip oneUpSound;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -10,6 +13,11 @@ public class OneUpPerk : MonoBehaviour
 
             if (collected)
             {
+                if (oneUpSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(oneUpSound, transform.position);
+                }
+
                 Destroy(gameObject);
             }
             else

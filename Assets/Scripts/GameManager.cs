@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,9 +20,23 @@ public class GameManager : MonoBehaviour
     public Color fullHeart = Color.white;
     public Color emptyHeart = Color.gray;
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioMixer audioMixer;
+    private AudioSource bgmSource;
+
     void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         currentLives = maxLives;
     }
 
@@ -30,10 +45,50 @@ public class GameManager : MonoBehaviour
         UpdateUI();
 
         Health playerHealth = player.GetComponent<Health>();
-        if(playerHealth != null)
+        if (playerHealth != null)
         {
             UpdateHearts(playerHealth.GetMaxHealth());
         }
+
+        bgmSource = GetComponent<AudioSource>();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        PlayMusicBasedOnScene(SceneManager.GetActiveScene());
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        PlayMusicBasedOnScene(scene);
+    }
+
+    private void PlayMusicBasedOnScene(Scene scene)
+    {
+        if (bgmSource == null) return;
+
+        if (scene.name == "MainMenu")
+        {
+            if (bgmSource.isPlaying) bgmSource.Stop();
+        }
+        else
+        {
+            if (!bgmSource.isPlaying)
+            {
+                bgmSource.Play();
+            }
+        }
+    }
+
+    public void SetMusicVolume(float sliderValue)
+    {
+        float dBValue = Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20f;
+
+        audioMixer.SetFloat("MusicVol", dBValue);
     }
 
     public void PlayerDied()
@@ -85,7 +140,6 @@ public class GameManager : MonoBehaviour
         {
             livesText.text = "x " + currentLives.ToString();
         }
-
     }
 
     public void UpdateHearts(int currentHealth)
@@ -105,7 +159,7 @@ public class GameManager : MonoBehaviour
 
     public bool TryAddLife()
     {
-        if(currentLives >= maxLives)
+        if (currentLives >= maxLives)
         {
             return false;
         }
@@ -113,5 +167,5 @@ public class GameManager : MonoBehaviour
         currentLives++;
         UpdateUI();
         return true;
-    } 
+    }
 }

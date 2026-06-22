@@ -150,3 +150,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98d7640989b5634494d1cff5fe3f8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GoldenRosePerk
+  oneUpSound: {fileID: 8300000, guid: 4d6eace0708819a43aae130b09f56bfc, type: 3}
